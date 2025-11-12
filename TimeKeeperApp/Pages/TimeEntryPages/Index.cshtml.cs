@@ -45,5 +45,34 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
             TimeEntry = await timeEntries.ToListAsync();
         }
+        public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
+        {
+            var timeEntry = await Context.TimeEntry.FirstOrDefaultAsync(
+                                                    m => m.TimeEntryId == id);
+
+            if (timeEntry == null)
+            {
+                return NotFound();
+            }
+
+            var timeEntryOperation = (approvalStatus == timeEntry.ApprovalStatus)
+                                        ? TimeEntryOperations.Approve
+                                         : null;
+
+            var isAuthorized = await AuthorizationService.AuthorizeAsync(
+                                                     User, timeEntry,
+                                                     timeEntryOperation);
+
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
+
+            timeEntry.ApprovalStatus = !approvalStatus;
+            Context.TimeEntry.Update(timeEntry);
+            await Context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+        }
     }
 }

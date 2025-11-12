@@ -14,22 +14,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].UserID)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].UserID) *@ User ID
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TimeEntry[0].Week)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn) *@ Time In
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeOut)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].TimeOut) *@ Time Out
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].HoursWorked)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].HoursWorked) *@ Hours Worked
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus) *@ Approval Status
             </th>
             <th></th>
         </tr>
@@ -70,6 +70,28 @@
                     {
                     <text> | </text>
                     <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                    }
+            </td>
+            <td>
+                @if (item.ApprovalStatus != true)
+                {
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                                User, item, TimeEntryOperations.Approve)).Succeeded)
+                    {
+                        <form style="display:inline;" method="post">
+                        <input type="hidden" name="id" value="@item.TimeEntryId" />
+                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
+                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                        </form>
+                    }
+                }
+                    @if (item.ApprovalStatus == true)
+                    {
+                        <form style="display:inline;" method="get">
+                            @* <input type="hidden" name="id" value="@item.TimeEntryId" />
+                            <input type="hidden" name="status" value="@TimeEntryOperations.Approve" /> *@
+                            <button type="submit" class="btn btn-xs btn-success">Report</button>
+                        </form>
                     }
             </td>
         </tr>

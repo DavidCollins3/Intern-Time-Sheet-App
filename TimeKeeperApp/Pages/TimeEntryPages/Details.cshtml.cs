@@ -42,7 +42,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
             var currentUserId = UserManager.GetUserId(User);
 
-            if (isAuthorized
+            if (!isAuthorized
                 && currentUserId != TimeEntry.UserID
                 && TimeEntry.ApprovalStatus != true)
             {
@@ -62,9 +62,9 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                 return NotFound();
             }
 
-            var timeEntryOperation = (approvalStatus == TimeEntry.ApprovalStatus)
-                                        ? TimeEntryOperations.Approve 
-                                        : null;
+            var timeEntryOperation = (approvalStatus == timeEntry.ApprovalStatus)
+                                        ? TimeEntryOperations.Approve
+                                         : null;
 
             var isAuthorized = await AuthorizationService.AuthorizeAsync(
                                                      User, timeEntry,
@@ -75,7 +75,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                 return Forbid();
             }
 
-            timeEntry.ApprovalStatus = approvalStatus;
+            timeEntry.ApprovalStatus = !approvalStatus;
             Context.TimeEntry.Update(timeEntry);
             await Context.SaveChangesAsync();
 

@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TimeEntry.TimeEntryId" />
             <div class="form-group">
-                <label asp-for="TimeEntry.UserID" class="control-label"></label>
+                <label asp-for="TimeEntry.UserID" class="control-label">User ID</label>
                 <input asp-for="TimeEntry.UserID" class="form-control" />
                 <span asp-validation-for="TimeEntry.UserID" class="text-danger"></span>
             </div>
@@ -25,25 +25,29 @@
                 <span asp-validation-for="TimeEntry.Week" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TimeEntry.TimeIn" class="control-label"></label>
+                <label asp-for="TimeEntry.TimeIn" class="control-label">Time In</label>
                 <input asp-for="TimeEntry.TimeIn" class="form-control" />
                 <span asp-validation-for="TimeEntry.TimeIn" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TimeEntry.TimeOut" class="control-label"></label>
+                <label asp-for="TimeEntry.TimeOut" class="control-label">Time Out</label>
                 <input asp-for="TimeEntry.TimeOut" class="form-control" />
                 <span asp-validation-for="TimeEntry.TimeOut" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="TimeEntry.HoursWorked" class="control-label"></label>
+                <label asp-for="TimeEntry.HoursWorked" class="control-label">Hours Worked</label>
                 <input asp-for="TimeEntry.HoursWorked" class="form-control" />
                 <span asp-validation-for="TimeEntry.HoursWorked" class="text-danger"></span>
             </div>
+
+            @if ((await AuthorizationService.AuthorizeAsync(
+                        User, Model.TimeEntry, TimeEntryOperations.Approve)).Succeeded)
+            {
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TimeEntry.ApprovalStatus" /> @Html.DisplayNameFor(model => model.TimeEntry.ApprovalStatus)
-                </label>
+                <label class="form-check-label"> 
+                    <input class="form-check-input" asp-for="TimeEntry.ApprovalStatus" /> Approval Status
             </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
