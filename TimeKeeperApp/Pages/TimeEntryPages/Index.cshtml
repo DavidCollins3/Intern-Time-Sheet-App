@@ -1,0 +1,78 @@
+﻿@page
+@model TimeKeeperApp.Pages.TimeEntryPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].UserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].Week)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].HoursWorked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TimeEntry) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Week)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoursWorked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovalStatus)
+            </td>
+            <td>
+                @if ((await AuthorizationService.AuthorizeAsync(
+                    User, item, TimeEntryOperations.Update)).Succeeded)
+                    {
+                    <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
+                    <text> | </text>
+                    }
+                
+                <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
+                
+                @if ((await AuthorizationService.AuthorizeAsync(
+                      User, item, TimeEntryOperations.Delete)).Succeeded)
+                    {
+                    <text> | </text>
+                    <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                    }
+            </td>
+        </tr>
+      }
+    </tbody>
+</table>

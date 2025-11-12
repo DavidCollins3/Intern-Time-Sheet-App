@@ -1,0 +1,59 @@
+﻿@page
+@model TimeKeeperApp.Pages.TimeEntryPages.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TimeEntry</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TimeEntry.UserID" class="control-label"></label>
+                <input asp-for="TimeEntry.UserID" class="form-control" />
+                <span asp-validation-for="TimeEntry.UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeEntry.Week" class="control-label"></label>
+                <input asp-for="TimeEntry.Week" class="form-control" />
+                <span asp-validation-for="TimeEntry.Week" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeEntry.TimeIn" class="control-label"></label>
+                <input asp-for="TimeEntry.TimeIn" class="form-control" />
+                <span asp-validation-for="TimeEntry.TimeIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeEntry.TimeOut" class="control-label"></label>
+                <input asp-for="TimeEntry.TimeOut" class="form-control" />
+                <span asp-validation-for="TimeEntry.TimeOut" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TimeEntry.HoursWorked" class="control-label"></label>
+                <input asp-for="TimeEntry.HoursWorked" class="form-control" />
+                <span asp-validation-for="TimeEntry.HoursWorked" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TimeEntry.ApprovalStatus" /> @Html.DisplayNameFor(model => model.TimeEntry.ApprovalStatus)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
