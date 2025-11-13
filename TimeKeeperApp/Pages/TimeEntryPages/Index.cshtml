@@ -1,6 +1,7 @@
 ﻿@page
 @model TimeKeeperApp.Pages.TimeEntryPages.IndexModel
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Rendering
 @inject UserManager<IdentityUser> UserManager
 
 @{
@@ -21,38 +22,44 @@
 
 @{
     var weeks = Model.TimeEntry.Select(te => te.Week).Distinct().ToList();
+    // Convert weeks (IList<int>) to IEnumerable<SelectListItem>
+    var weekSelectList = weeks.Select(w => new SelectListItem
+    {
+        Value = w.ToString(),
+        Text = w.ToString()
+    }).ToList();
 }
 
 <div class="dropdown">
-    <button class="dropbtn">Select Week</button>
-    <div class="dropdown-content">
-        @foreach (var week in weeks)
+    <select name="SelectWeek">
+        <option value="">Select a Week</option>
+        @foreach (var week in weekSelectList)
         {
-            <option value="@week"></option>
+            <option value="@week.Value">@week.Text</option>
         }
-    </div>
+    </select>
 </div>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].UserID) *@ User ID
+                User ID
             </th>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].Week) *@ Week Starting
+                Week Starting
             </th>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn) *@ Time In
+                Time In
             </th>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].TimeOut) *@ Time Out
+                Time Out
             </th>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].HoursWorked) *@ Hours Worked
+                Hours Worked
             </th>
             <th>
-                @* @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus) *@ Approval Status
+                Approval Status
             </th>
         </tr>
     </thead>
@@ -60,7 +67,6 @@
 
 @foreach (var item in Model.TimeEntry)
     {
-    @* @if (item.Week == week) { *@
     <tr>
         <td>
             @{
@@ -89,8 +95,8 @@
             @if ((await AuthorizationService.AuthorizeAsync(
                 User, item, TimeEntryOperations.Update)).Succeeded)
                 {
-                <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
-                <text> | </text>
+                    <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
+                    <text> | </text>
                 }
             
             <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
@@ -98,37 +104,35 @@
             @if ((await AuthorizationService.AuthorizeAsync(
                   User, item, TimeEntryOperations.Delete)).Succeeded)
                 {
-                <text> | </text>
-                <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                    <text> | </text>
+                    <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
                 }
         </td>
         <td>
             @if (User.IsInRole(Constants.AdminRole) ||
                 User.IsInRole(Constants.SuperRole)) 
             {
-            @if (item.ApprovalStatus != true)
-            {
-                @if ((await AuthorizationService.AuthorizeAsync(
-                            User, item, TimeEntryOperations.Approve)).Succeeded)
+                @if (item.ApprovalStatus != true)
                 {
-                    <form style="display:inline;" method="post">
-                    <input type="hidden" name="id" value="@item.TimeEntryId" />
-                    <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
-                    <button type="submit" class="btn btn-xs btn-success">Approve</button>
-                    </form>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                            User, item, TimeEntryOperations.Approve)).Succeeded)
+                    {
+                        <form style="display:inline;" method="post">
+                        <input type="hidden" name="id" value="@item.TimeEntryId" />
+                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
+                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                        </form>
+                    }
                 }
-            }
                 @if (item.ApprovalStatus == true)
                 {
                     <form style="display:inline;" method="get">
-                        @* <input type="hidden" name="id" value="@item.TimeEntryId" />
-                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" /> *@
-                        <button type="submit" class="btn btn-xs btn-success">Report</button>
+                        <button class="btn btn-xs btn-success">Report</button>
                     </form>
                 }
-                }
+            }
         </td>
     </tr>
-  }
+    }
 </tbody>
 </table>

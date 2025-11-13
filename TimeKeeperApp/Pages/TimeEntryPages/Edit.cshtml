@@ -7,18 +7,20 @@
 
 <h1>Edit</h1>
 
-<h4>TimeEntry</h4>
+<h4>Time Entry</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TimeEntry.TimeEntryId" />
-            @* <div class="form-group">
+            @*
+            <div class="form-group">
                 <label asp-for="TimeEntry.UserID" class="control-label">User ID</label>
                 <input asp-for="TimeEntry.UserID" class="form-control" />
                 <span asp-validation-for="TimeEntry.UserID" class="text-danger"></span>
-            </div> *@
+            </div>
+            *@
             <div class="form-group">
                 <label asp-for="TimeEntry.Week" class="control-label"></label>
                 <input asp-for="TimeEntry.Week" class="form-control" />
@@ -34,18 +36,20 @@
                 <input asp-for="TimeEntry.TimeOut" class="form-control" />
                 <span asp-validation-for="TimeEntry.TimeOut" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
+            @* 
+                <div class="form-group">
                 <label asp-for="TimeEntry.HoursWorked" class="control-label">Hours Worked</label>
                 <input asp-for="TimeEntry.HoursWorked" class="form-control" />
                 <span asp-validation-for="TimeEntry.HoursWorked" class="text-danger"></span>
-            </div> *@
-
+                </div> 
+            *@
             @if ((await AuthorizationService.AuthorizeAsync(
                         User, Model.TimeEntry, TimeEntryOperations.Approve)).Succeeded)
             {
             <div class="form-group form-check">
                 <label class="form-check-label"> 
                     <input class="form-check-input" asp-for="TimeEntry.ApprovalStatus" /> Approval Status
+                </label>
             </div>
             }
             <div class="form-group">

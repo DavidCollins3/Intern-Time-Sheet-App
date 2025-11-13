@@ -25,6 +25,11 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public IList<TimeEntry> TimeEntry { get;set; }
 
+        
+        [BindProperty(SupportsGet = true)]
+        public IList<int> Weeks { get; set; }
+
+
         public async Task OnGetAsync()
         {
             var timeEntries = from t in Context.TimeEntry
@@ -35,16 +40,30 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
             var currentUserId = UserManager.GetUserId(User);
 
-            // Only approved Time Entries are shown
-            // UNLESS you're the owner, a supervisor, or an admin
+            var weeks = timeEntries.Select(t => t.Week).Distinct().ToList();
+            ViewData["Weeks"] = weeks;
+
+            //var selectedWeek = Request.Form["SelectWeek"];
+
+            // Only your Time Entries are shown
+            // UNLESS you're a supervisor or admin
             if (!isAuthorized)
             {
-                timeEntries = timeEntries.Where(t => t.ApprovalStatus == true
-                                                    || t.UserID == currentUserId);
+                timeEntries = timeEntries.Where(t => t.UserID == currentUserId
+                                                //&& t.Week.ToString() == selectedWeek
+                                                );
             }
 
+            timeEntries = timeEntries.OrderBy(t => t.TimeIn);
+
             TimeEntry = await timeEntries.ToListAsync();
+
+
         }
+
+
+
+
         public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
         {
             var timeEntry = await Context.TimeEntry.FirstOrDefaultAsync(
@@ -55,13 +74,9 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                 return NotFound();
             }
 
-            var timeEntryOperation = (approvalStatus == timeEntry.ApprovalStatus)
-                                        ? TimeEntryOperations.Approve
-                                         : null;
-
             var isAuthorized = await AuthorizationService.AuthorizeAsync(
                                                      User, timeEntry,
-                                                     timeEntryOperation);
+                                                     TimeEntryOperations.Approve);
 
             if (!isAuthorized.Succeeded)
             {
