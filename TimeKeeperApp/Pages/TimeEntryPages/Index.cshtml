@@ -11,13 +11,13 @@
 
 @if (User.IsInRole(Constants.InternRole) ||
     User.IsInRole(Constants.AdminRole))
-{
-    <p>
-        <button>
-            <a asp-page="Create">Create New</a>
-        </button>
-    </p>
-}
+    {
+        <p>
+            <button>
+                <a asp-page="Create">Create New</a>
+           </button>
+        </p>
+    }
 
 @{
     var weeks = Model.TimeEntry.Select(te => te.Week).Distinct().ToList();
@@ -58,72 +58,77 @@
     </thead>
     <tbody>
 
-@foreach (var item in Model.TimeEntry) {
-    @* @if (item.Week == weeks[0]) { *@
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Week)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoursWorked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovalStatus)
-            </td>
-            <td>
-                @if ((await AuthorizationService.AuthorizeAsync(
-                    User, item, TimeEntryOperations.Update)).Succeeded)
-                    {
-                    <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
-                    <text> | </text>
-                    }
-                
-                <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
-                
-                @if ((await AuthorizationService.AuthorizeAsync(
-                      User, item, TimeEntryOperations.Delete)).Succeeded)
-                    {
-                    <text> | </text>
-                    <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
-                    }
-            </td>
-            <td>
-                @if (User.IsInRole(Constants.AdminRole) ||
-                    User.IsInRole(Constants.SuperRole)) 
+@foreach (var item in Model.TimeEntry)
+    {
+    @* @if (item.Week == week) { *@
+    <tr>
+        <td>
+            @{
+                // Fix: Use UserManager to get user name by ID
+                var user = await UserManager.FindByIdAsync(item.UserID);
+                var userName = user != null ? user.UserName : item.UserID;
+            }
+            @userName
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Week)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeIn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TimeOut)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoursWorked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovalStatus)
+        </td>
+        <td>
+            @if ((await AuthorizationService.AuthorizeAsync(
+                User, item, TimeEntryOperations.Update)).Succeeded)
                 {
-                @if (item.ApprovalStatus != true)
-                {
-                    @if ((await AuthorizationService.AuthorizeAsync(
-                                User, item, TimeEntryOperations.Approve)).Succeeded)
-                    {
-                        <form style="display:inline;" method="post">
-                        <input type="hidden" name="id" value="@item.TimeEntryId" />
-                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
-                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
-                        </form>
-                    }
+                <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
+                <text> | </text>
                 }
-                    @if (item.ApprovalStatus == true)
-                    {
-                        <form style="display:inline;" method="get">
-                            @* <input type="hidden" name="id" value="@item.TimeEntryId" />
-                            <input type="hidden" name="status" value="@TimeEntryOperations.Approve" /> *@
-                            <button type="submit" class="btn btn-xs btn-success">Report</button>
-                        </form>
-                    }
-                    }
-            </td>
-        </tr>
-        @* } *@
-      }
-    </tbody>
+            
+            <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
+            
+            @if ((await AuthorizationService.AuthorizeAsync(
+                  User, item, TimeEntryOperations.Delete)).Succeeded)
+                {
+                <text> | </text>
+                <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                }
+        </td>
+        <td>
+            @if (User.IsInRole(Constants.AdminRole) ||
+                User.IsInRole(Constants.SuperRole)) 
+            {
+            @if (item.ApprovalStatus != true)
+            {
+                @if ((await AuthorizationService.AuthorizeAsync(
+                            User, item, TimeEntryOperations.Approve)).Succeeded)
+                {
+                    <form style="display:inline;" method="post">
+                    <input type="hidden" name="id" value="@item.TimeEntryId" />
+                    <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
+                    <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                    </form>
+                }
+            }
+                @if (item.ApprovalStatus == true)
+                {
+                    <form style="display:inline;" method="get">
+                        @* <input type="hidden" name="id" value="@item.TimeEntryId" />
+                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" /> *@
+                        <button type="submit" class="btn btn-xs btn-success">Report</button>
+                    </form>
+                }
+                }
+        </td>
+    </tr>
+  }
+</tbody>
 </table>
