@@ -21,7 +21,18 @@ namespace TimeKeeperApp.Models
 
         // String parsed from TimeSpan value of TimeOut - TimeIn
         // HoursWorked = TimeOut.Subtract(TimeIn).ToString();
-        public string? HoursWorked { get; set; }
+        public string? HoursWorked
+        {
+            get
+            {
+                if (TimeOut.HasValue)
+                {
+                    return (TimeOut.Value - TimeIn).ToString();
+                }
+                return null;
+            }
+            private set { }
+        }
 
         // Has the time entry been supervisor approved?
         public bool ApprovalStatus { get; set; }

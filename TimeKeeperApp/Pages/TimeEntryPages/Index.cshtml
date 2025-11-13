@@ -1,5 +1,7 @@
 ﻿@page
 @model TimeKeeperApp.Pages.TimeEntryPages.IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -7,9 +9,30 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+@if (User.IsInRole(Constants.InternRole) ||
+    User.IsInRole(Constants.AdminRole))
+{
+    <p>
+        <button>
+            <a asp-page="Create">Create New</a>
+        </button>
+    </p>
+}
+
+@{
+    var weeks = Model.TimeEntry.Select(te => te.Week).Distinct().ToList();
+}
+
+<div class="dropdown">
+    <button class="dropbtn">Select Week</button>
+    <div class="dropdown-content">
+        @foreach (var week in weeks)
+        {
+            <option value="@week"></option>
+        }
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +40,7 @@
                 @* @Html.DisplayNameFor(model => model.TimeEntry[0].UserID) *@ User ID
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].Week)
+                @* @Html.DisplayNameFor(model => model.TimeEntry[0].Week) *@ Week Starting
             </th>
             <th>
                 @* @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn) *@ Time In
@@ -31,11 +54,12 @@
             <th>
                 @* @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus) *@ Approval Status
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model.TimeEntry) {
+    @* @if (item.Week == weeks[0]) { *@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UserID)
@@ -73,6 +97,9 @@
                     }
             </td>
             <td>
+                @if (User.IsInRole(Constants.AdminRole) ||
+                    User.IsInRole(Constants.SuperRole)) 
+                {
                 @if (item.ApprovalStatus != true)
                 {
                     @if ((await AuthorizationService.AuthorizeAsync(
@@ -93,8 +120,10 @@
                             <button type="submit" class="btn btn-xs btn-success">Report</button>
                         </form>
                     }
+                    }
             </td>
         </tr>
+        @* } *@
       }
     </tbody>
 </table>
