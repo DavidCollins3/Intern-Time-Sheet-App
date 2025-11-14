@@ -47,9 +47,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
             // UNLESS you're a supervisor or admin
             if (!isAuthorized)
             {
-                    timeEntries = timeEntries.Where(t => t.UserID == currentUserId
-                                                    //&& t.Week.ToString() == SelectedWeek
-                                                    );
+                    timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
             }
             timeEntries = timeEntries.OrderBy(t => t.TimeIn);
             TimeEntry = await timeEntries.ToListAsync();
@@ -88,8 +86,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
         {
             var timeEntry = await Context.TimeEntry.FirstOrDefaultAsync(
-                                                    m => m.TimeEntryId == id);
-
+                                                        m => m.TimeEntryId == id);
             if (timeEntry == null)
             {
                 return NotFound();
@@ -104,11 +101,49 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                 return Forbid();
             }
 
-            timeEntry.ApprovalStatus = !approvalStatus;
-            Context.TimeEntry.Update(timeEntry);
+            approveHelper(timeEntry);
+
             await Context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostApproveAll()
+        {
+            var timeEntries = from t in Context.TimeEntry
+                              select t;
+
+            if (!string.IsNullOrEmpty(SelectedWeek)
+                && DateOnly.TryParse(SelectedWeek, out var parsedWeek))
+            {
+                timeEntries = timeEntries.Where(t => t.Week == parsedWeek);
+            }
+
+            if (timeEntries == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var timeEntry in timeEntries)
+            {
+
+                var isAuthorized = await AuthorizationService.AuthorizeAsync(
+                                                     User, timeEntry,
+                                                     TimeEntryOperations.Approve);
+                if (!isAuthorized.Succeeded)
+                {
+                    return Forbid();
+                }
+                approveHelper(timeEntry);
+            }
+            await Context.SaveChangesAsync();
+            return RedirectToPage("./Index");
+        }
+
+        public void approveHelper(TimeEntry timeEntry)
+        {
+            timeEntry.ApprovalStatus = true;
+            Context.TimeEntry.Update(timeEntry);
         }
     }
 }

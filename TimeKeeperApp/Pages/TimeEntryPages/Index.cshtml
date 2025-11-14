@@ -36,30 +36,23 @@
             <option value="">Select a Week</option>
         </select>
         <button type="submit" class="btn btn-xs btn-success">Filter</button>
+        @if (User.IsInRole(Constants.AdminRole) ||
+                User.IsInRole(Constants.SuperRole))
+        {
+            <button type="submit" class="btn btn-xs btn-success" asp-page-handler="ApproveAll">Approve All</button>
+        }
     </form>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                User ID
-            </th>
-            <th>
-                Week Starting
-            </th>
-            <th>
-                Time In
-            </th>
-            <th>
-                Time Out
-            </th>
-            <th>
-                Hours Worked
-            </th>
-            <th>
-                Approval Status
-            </th>
+            <th>User ID</th>
+            <th>Week Starting</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Hours Worked</th>
+            <th>Approval Status</th>
         </tr>
     </thead>
     <tbody>
