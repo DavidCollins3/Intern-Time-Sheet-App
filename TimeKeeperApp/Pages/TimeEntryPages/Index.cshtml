@@ -21,7 +21,7 @@
     }
 
 @{
-    var weeks = Model.TimeEntry.Select(te => te.Week).Distinct().ToList();
+    var weeks = Model.Weeks;
     // Convert weeks (IList<int>) to IEnumerable<SelectListItem>
     var weekSelectList = weeks.Select(w => new SelectListItem
     {
@@ -31,13 +31,12 @@
 }
 
 <div class="dropdown">
-    <select name="SelectWeek">
-        <option value="">Select a Week</option>
-        @foreach (var week in weekSelectList)
-        {
-            <option value="@week.Value">@week.Text</option>
-        }
-    </select>
+    <form style="display:inline;" method="post" asp-page-handler="Weeks">
+        <select name="SelectedWeek" asp-for="SelectedWeek" asp-items="@weekSelectList">
+            <option value="">Select a Week</option>
+        </select>
+        <button type="submit" class="btn btn-xs btn-success">Filter</button>
+    </form>
 </div>
 
 <table class="table">
@@ -109,20 +108,16 @@
                 }
         </td>
         <td>
-            @if (User.IsInRole(Constants.AdminRole) ||
-                User.IsInRole(Constants.SuperRole)) 
+        @if ((await AuthorizationService.AuthorizeAsync(
+            User, item, TimeEntryOperations.Approve)).Succeeded)
             {
                 @if (item.ApprovalStatus != true)
                 {
-                    @if ((await AuthorizationService.AuthorizeAsync(
-                            User, item, TimeEntryOperations.Approve)).Succeeded)
-                    {
                         <form style="display:inline;" method="post">
                         <input type="hidden" name="id" value="@item.TimeEntryId" />
                         <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
                         <button type="submit" class="btn btn-xs btn-success">Approve</button>
                         </form>
-                    }
                 }
                 @if (item.ApprovalStatus == true)
                 {
