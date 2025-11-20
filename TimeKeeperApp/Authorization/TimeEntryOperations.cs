@@ -14,6 +14,8 @@ namespace TimeKeeperApp.Authorization
           new OperationAuthorizationRequirement { Name = Constants.DeleteOperationName };
         public static OperationAuthorizationRequirement Approve =
           new OperationAuthorizationRequirement { Name = Constants.ApproveOperationName };
+        public static OperationAuthorizationRequirement Register =
+  new OperationAuthorizationRequirement { Name = Constants.RegisterOperationName };
     }
 
     public class Constants
@@ -26,5 +28,6 @@ namespace TimeKeeperApp.Authorization
         public const string UpdateOperationName = "Update";
         public const string DeleteOperationName = "Delete";
         public const string ApproveOperationName = "Approve";
+        public const string RegisterOperationName = "Register";
     }
 }

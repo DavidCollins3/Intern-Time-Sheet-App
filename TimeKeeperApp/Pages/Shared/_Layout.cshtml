@@ -22,12 +22,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/timeentrypages/Index">Time Entries</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/TimeEntryPages/Index">Time Entries</a>
                         </li>
+                        
+                        @if (User.IsInRole(Constants.AdminRole) ||
+                             User.IsInRole(Constants.SuperRole))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register New User</a>
+                            </li>
+                        }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

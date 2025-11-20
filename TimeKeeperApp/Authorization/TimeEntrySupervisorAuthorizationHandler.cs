@@ -24,8 +24,10 @@ namespace TimeKeeperApp.Authorization
             // If the operation is "Approve", allow supervisors to approve time entries.
             // If not "Approve", return.
             // Allow supervisors to read time entries, as well.
+            // Also allow supervisors to register new user (intern) accounts.
             if (requirement.Name != Constants.ApproveOperationName &&
-                requirement.Name != Constants.ReadOperationName)
+                requirement.Name != Constants.ReadOperationName &&
+                requirement.Name != Constants.RegisterOperationName)
             {
                 return Task.CompletedTask;
             }

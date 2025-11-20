@@ -3,16 +3,51 @@
   "WorkspaceRootPath": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\timeentrypages\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\timeentrypages\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\areas\\identity\\pages\\account\\register.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\scaffoldingreadme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\scaffoldingreadme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\timeentrypages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\timeentrypages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\timeentrypages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\timeentrypages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\timeentrypages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\timeentrypages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\authorization\\timeentryoperations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\authorization\\timeentryoperations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\authorization\\timeentrysupervisorauthorizationhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\authorization\\timeentrysupervisorauthorizationhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/aspnet_TimeKeeperApp_70da1db0_8bee_4650_800b_a3284b1fbf5b/True/SqlTable/dbo.AspNetRoles.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|c:\\users\\davidcollins\\source\\repos\\interntimesheetapp\\intern time sheet app\\timekeeperapp\\pages\\timeentrypages\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7208C272-FE54-462E-9019-CC78601FF1F4}|TimeKeeperApp\\TimeKeeperApp.csproj|solutionrelative:timekeeperapp\\pages\\timeentrypages\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,16 +57,130 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "RelativeToolTip": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T14:52:44.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Login.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "RelativeToolTip": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T14:52:43.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "_LoginPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\Shared\\_LoginPartial.cshtml",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Pages\\Shared\\_LoginPartial.cshtml",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\Shared\\_LoginPartial.cshtml*",
+              "RelativeToolTip": "TimeKeeperApp\\Pages\\Shared\\_LoginPartial.cshtml*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T14:51:07.586Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "TimeEntrySupervisorAuthorizationHandler.cs",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Authorization\\TimeEntrySupervisorAuthorizationHandler.cs",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Authorization\\TimeEntrySupervisorAuthorizationHandler.cs",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Authorization\\TimeEntrySupervisorAuthorizationHandler.cs",
+              "RelativeToolTip": "TimeKeeperApp\\Authorization\\TimeEntrySupervisorAuthorizationHandler.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBoAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T14:42:40.382Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "TimeEntryOperations.cs",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Authorization\\TimeEntryOperations.cs",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Authorization\\TimeEntryOperations.cs",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Authorization\\TimeEntryOperations.cs",
+              "RelativeToolTip": "TimeKeeperApp\\Authorization\\TimeEntryOperations.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB4AAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T14:41:45.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Pages\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "TimeKeeperApp\\Pages\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-20T14:37:52.204Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "dbo.AspNetRoles [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/aspnet_TimeKeeperApp_70da1db0_8bee_4650_800b_a3284b1fbf5b/True/SqlTable/dbo.AspNetRoles.sql",
+              "ToolTip": "dbo.AspNetRoles [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-11-20T14:36:08.538Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Register.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "RelativeToolTip": "TimeKeeperApp\\Areas\\Identity\\Pages\\Account\\Register.cshtml.cs",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAlwBkAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-20T14:21:40.469Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ScaffoldingReadMe.txt",
+              "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\ScaffoldingReadMe.txt",
+              "RelativeDocumentMoniker": "TimeKeeperApp\\ScaffoldingReadMe.txt",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\ScaffoldingReadMe.txt",
+              "RelativeToolTip": "TimeKeeperApp\\ScaffoldingReadMe.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-11-20T14:19:12.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml",
               "RelativeDocumentMoniker": "TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml*",
-              "RelativeToolTip": "TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml*",
+              "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml",
+              "RelativeToolTip": "TimeKeeperApp\\Pages\\TimeEntryPages\\Delete.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-19T17:37:53.042Z",
@@ -39,26 +188,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml",
               "RelativeDocumentMoniker": "TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml",
               "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml",
               "RelativeToolTip": "TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAAACYAAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-12T15:28:45.817Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "Index.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml.cs",
               "RelativeDocumentMoniker": "TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml.cs",
               "ToolTip": "C:\\Users\\DavidCollins\\source\\repos\\InternTimeSheetApp\\Intern Time Sheet App\\TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml.cs",
               "RelativeToolTip": "TimeKeeperApp\\Pages\\TimeEntryPages\\Index.cshtml.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAAwIkAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAIkAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-12T15:34:37.451Z",
               "EditorCaption": ""
