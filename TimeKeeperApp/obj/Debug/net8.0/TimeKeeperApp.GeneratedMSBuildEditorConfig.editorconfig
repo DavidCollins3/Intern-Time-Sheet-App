@@ -64,6 +64,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/DavidCollins/source/repos/InternTimeSheetApp/Intern Time Sheet App/TimeKeeperApp/Pages/Reports/GeneratePdf.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0c1xHZW5lcmF0ZVBkZi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/DavidCollins/source/repos/InternTimeSheetApp/Intern Time Sheet App/TimeKeeperApp/Pages/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -90,6 +94,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/DavidCollins/source/repos/InternTimeSheetApp/Intern Time Sheet App/TimeKeeperApp/Pages/TimeEntryPages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGltZUVudHJ5UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/DavidCollins/source/repos/InternTimeSheetApp/Intern Time Sheet App/TimeKeeperApp/Pages/TimeEntryPages/ReportPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVGltZUVudHJ5UGFnZXNcUmVwb3J0UGFydGlhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/DavidCollins/source/repos/InternTimeSheetApp/Intern Time Sheet App/TimeKeeperApp/Pages/_ViewImports.cshtml]

@@ -1,0 +1,65 @@
+@model TimeKeeperApp.Models.ReportViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+        th { background: #f4f4f4; }
+        .center { text-align: center; }
+        .totals { margin-top: 12px; }
+    </style>
+</head>
+<body>
+    <h2 class="center">Time Sheet Report</h2>
+
+    <section class="totals">
+        <h3>Totals</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Submitted By</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.Totals)
+                {
+                    <tr>
+                        <td>@t.UserName</td>
+                        <td>@t.TotalHoursFormatted</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+    <h3>Entries</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Submitted By</th>
+                <th>Week Starting</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Hours Worked</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Entries)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.Week.ToString("yyyy-MM-dd")</td>
+                <td>@item.TimeIn.ToString("g")</td>
+                <td>@(item.TimeOut?.ToString("g") ?? "")</td>
+                <td>@item.HoursWorked</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</body>
+</html>

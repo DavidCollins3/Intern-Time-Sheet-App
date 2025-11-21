@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="TimeKeeperDataSource">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=(localdb)\mssqllocaldb;Initial Catalog=aspnet-TimeKeeperApp-70da1db0-8bee-4650-800b-a3284b1fbf5b;MultipleActiveResultSets=True</ConnectString>
+    <IntegratedSecurity>true</IntegratedSecurity>
+  </ConnectionProperties>
+  <DataSourceID>5a423808-c601-4d69-a810-6a6e1fd9aa47</DataSourceID>
+</RptDataSource>

@@ -49,6 +49,12 @@
     <Reports>@(Report)</Reports>
   </PropertyGroup>
   <ItemGroup>
+    <DataSet Include="TimeKeeperDataSet.rsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DataSource Include="TimeKeeperDataSource.rds" />
+  </ItemGroup>
+  <ItemGroup>
     <Report Include="Time Sheets.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />

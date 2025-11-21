@@ -14,7 +14,7 @@
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="InternTimeSheets">
+    <DataSource Name="TimeKeeperDataSource">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString>Data Source=(localdb)\mssqllocaldb;Initial Catalog=aspnet-TimeKeeperApp-70da1db0-8bee-4650-800b-a3284b1fbf5b;MultipleActiveResultSets=True</ConnectString>
@@ -25,9 +25,9 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="TimeKeeperDataset">
+    <DataSet Name="TimeKeeperDataSet">
       <Query>
-        <DataSourceName>InternTimeSheets</DataSourceName>
+        <DataSourceName>TimeKeeperDataSource</DataSourceName>
         <CommandText>SELECT te.Week AS [Week Starting], asu.UserName AS [Submitted By], te.TimeIn AS [Time In], te.TimeOut AS [Time Out], te.HoursWorked AS [Hours Worked]
 FROM   TimeEntry AS te INNER JOIN
          AspNetUsers AS asu ON te.UserID = asu.Id
@@ -65,10 +65,10 @@ GROUP BY asu.UserName, te.Week, te.TimeIn, te.TimeOut, te.HoursWorked</CommandTe
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>2.72396in</Width>
+                  <Width>2.75in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.89583in</Width>
+                  <Width>3in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -464,11 +464,11 @@ GROUP BY asu.UserName, te.Week, te.TimeIn, te.TimeOut, te.HoursWorked</CommandTe
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>TimeKeeperDataset</DataSetName>
+            <DataSetName>TimeKeeperDataSet</DataSetName>
             <Top>0.30729in</Top>
             <Left>0.13542in</Left>
             <Height>0.5in</Height>
-            <Width>9.26042in</Width>
+            <Width>9.25in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -479,7 +479,7 @@ GROUP BY asu.UserName, te.Week, te.TimeIn, te.TimeOut, te.HoursWorked</CommandTe
         <Height>2in</Height>
         <Style />
       </Body>
-      <Width>11.46875in</Width>
+      <Width>11.5in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>

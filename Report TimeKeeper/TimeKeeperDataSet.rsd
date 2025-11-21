@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet1">
+    <Query>
+      <DataSourceReference>TimeKeeperDataSource</DataSourceReference>
+      <CommandText>SELECT te.Week AS [Week Starting], asu.UserName AS [Submitted By], te.TimeIn AS [Time In], te.TimeOut AS [Time Out], te.HoursWorked AS [Hours Worked]
+FROM  TimeEntry AS te INNER JOIN
+         AspNetUsers AS asu ON te.UserID = asu.Id
+GROUP BY asu.UserName, te.Week, te.TimeIn, te.TimeOut, te.HoursWorked</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="Week_Starting">
+        <DataField>Week Starting</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Submitted_By">
+        <DataField>Submitted By</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Time_In">
+        <DataField>Time In</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Time_Out">
+        <DataField>Time Out</DataField>
+        <rd:TypeName>System.DateTime</rd:TypeName>
+      </Field>
+      <Field Name="Hours_Worked">
+        <DataField>Hours Worked</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>

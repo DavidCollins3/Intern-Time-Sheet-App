@@ -26,9 +26,11 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public IList<TimeEntry> TimeEntry { get;set; }
         public List<DateOnly> Weeks { get; set; }
+        public List<string?> Users { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string? SelectedWeek { get; set; }
+        public string? SelectedUser { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -41,6 +43,10 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
             var currentUserId = UserManager.GetUserId(User);
 
             Weeks = timeEntries.Select(t => t.Week).Distinct().ToList();
+            Users = (from t in Context.TimeEntry
+                     join u in Context.Users on t.UserID equals u.Id
+                     orderby u.Id
+                     select u.Id).Distinct().ToList();
 
 
             // Only your Time Entries are shown
@@ -74,6 +80,11 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                 timeEntries = timeEntries.Where(t => t.Week == parsedWeek);
             }
 
+            if (!string.IsNullOrEmpty(SelectedUser))
+            {
+                timeEntries = timeEntries.Where(t => t.UserID == SelectedUser);
+            }
+
             // Only your Time Entries are shown UNLESS you're a supervisor or admin
             if (!isAuthorized)
             {
@@ -82,6 +93,34 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
             timeEntries = timeEntries.OrderBy(t => t.TimeIn);
             TimeEntry = timeEntries.ToList();
         }
+
+        //public void OnPostUsers()
+        //{
+        //    var timeEntries = from t in Context.TimeEntry
+        //                      select t;
+
+        //    var isAuthorized = User?.Identity != null && User.Identity.IsAuthenticated;
+
+        //    var currentUserId = UserManager.GetUserId(User);
+
+        //    Users = (from t in Context.TimeEntry
+        //             join u in Context.Users on t.UserID equals u.Id
+        //             orderby u.Id
+        //             select u.Id).Distinct().ToList();
+
+        //    if (!string.IsNullOrEmpty(SelectedUser))
+        //    {
+        //        timeEntries = timeEntries.Where(t => t.UserID == SelectedUser);
+        //    }
+
+        //    // Only your Time Entries are shown UNLESS you're a supervisor or admin
+        //    if (!isAuthorized)
+        //    {
+        //        timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
+        //    }
+        //    timeEntries = timeEntries.OrderBy(t => t.TimeIn);
+        //    TimeEntry = timeEntries.ToList();
+        //}
 
         public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
         {

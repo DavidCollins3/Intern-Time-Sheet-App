@@ -26,6 +26,9 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
+// register the renderer as scoped so it can resolve scoped MVC services
+builder.Services.AddScoped<IRazorViewRenderer, RazorViewRenderer>();
+
 // Authorization handlers
 builder.Services.AddScoped<IAuthorizationHandler,
                       TimeEntryIsOwnerAuthorizationHandler>();
