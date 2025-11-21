@@ -12,31 +12,20 @@
 
 @if (User.IsInRole(Constants.InternRole) ||
     User.IsInRole(Constants.AdminRole))
-    {
-        <p>
-            <button>
-                <a asp-page="Create">Create New</a>
-           </button>
-        </p>
-    }
+{
+    <p>
+        <a asp-page="Create" class="btn btn-primary">Create New</a>
+    </p>
+}
 
 @{
-    var weeks = Model.Weeks;
-    // Convert weeks (DateOnly) to IEnumerable<SelectListItem>
-    var weekSelectList = weeks.Select(w => new SelectListItem
+    var weekSelectList = Model.Weeks.Select(w => new SelectListItem
     {
         Value = w.ToString("yyyy-MM-dd"),
         Text = w.ToString("yyyy-MM-dd")
     }).ToList();
 
-    // Fix: Convert Model.Users (List<string>) to List<SelectListItem>
-    var userSelectList = Model.Users
-        .Select(u => new SelectListItem
-        {
-            Value = u,
-            Text = u
-        })
-        .ToList();
+    var userSelectList = Model.Users; // already SelectListItem from the model
 }
 
 <div class="dropdown">
@@ -45,30 +34,27 @@
             <option value="">Select a Week</option>
         </select>
 
-        @* <select asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
+        <select asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
             <option value="">All Users</option>
-        </select> *@
+        </select>
 
         <button type="submit" class="btn btn-xs btn-success">Filter</button>
+
         @if (User.IsInRole(Constants.AdminRole) ||
-                User.IsInRole(Constants.SuperRole))
+             User.IsInRole(Constants.SuperRole))
         {
             <button type="submit" class="btn btn-xs btn-success" asp-page-handler="ApproveAll">Approve Week</button>
         }
-        <a asp-page="/Reports/GeneratePdf" asp-route-week="@Model.SelectedWeek" class="btn btn-secondary" role="button">
-            Generate Report
-        </a>
     </form>
-</div>
 
-@* <div class="dropdown">
-    <form style="display:inline" method="post" asp-page-handler="Users">
-        <select name="SelectedUser" asp-for="SelectedUser" asp-items="@userSelectList">
-            <option value="">Select an Intern</option>
-        </select>
-        <button type="submit" class="btn btn-xs btn-success">Filter Intern</button>
-    </form>
-</div> *@
+    @* Keep the report link outside the form; include both route values *@
+    <a asp-page="/Reports/GeneratePdf"
+       asp-route-week="@Model.SelectedWeek"
+       asp-route-user="@Model.SelectedUser"
+       class="btn btn-secondary" role="button">
+        Generate Report
+    </a>
+</div>
 
 <table class="table">
     <thead>

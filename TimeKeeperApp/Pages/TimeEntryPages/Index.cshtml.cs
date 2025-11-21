@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,16 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         {
         }
 
-        public IList<TimeEntry> TimeEntry { get;set; }
-        public List<DateOnly> Weeks { get; set; }
-        public List<string?> Users { get; set; }
+        public IList<TimeEntry> TimeEntry { get; set; } = new List<TimeEntry>();
+        public List<DateOnly> Weeks { get; set; } = new List<DateOnly>();
+
+        // Use SelectListItem so the view can render username text and user id value
+        public List<SelectListItem> Users { get; set; } = new List<SelectListItem>();
 
         [BindProperty(SupportsGet = true)]
         public string? SelectedWeek { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string? SelectedUser { get; set; }
 
         public async Task OnGetAsync()
@@ -43,84 +48,43 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
             var currentUserId = UserManager.GetUserId(User);
 
             Weeks = timeEntries.Select(t => t.Week).Distinct().ToList();
-            Users = (from t in Context.TimeEntry
-                     join u in Context.Users on t.UserID equals u.Id
-                     orderby u.Id
-                     select u.Id).Distinct().ToList();
 
+            // Build user select list from users who have time entries
+            Users = await Context.Users
+                       .Where(u => Context.TimeEntry.Any(te => te.UserID == u.Id))
+                       .OrderBy(u => u.UserName)
+                       .Select(u => new SelectListItem { Value = u.Id, Text = u.UserName })
+                       .ToListAsync();
 
-            // Only your Time Entries are shown
-            // UNLESS you're a supervisor or admin
-            if (!isAuthorized)
-            {
-                    timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
-            }
-            timeEntries = timeEntries.OrderBy(t => t.TimeIn);
-            TimeEntry = await timeEntries.ToListAsync();
-        }
-
-        public void OnPostWeeks()
-        {
-            var timeEntries = from t in Context.TimeEntry
-                              select t;
-
-            var isAuthorized = User.IsInRole(Constants.AdminRole) ||
-                               User.IsInRole(Constants.SuperRole);
-
-            var currentUserId = UserManager.GetUserId(User);
-
-            Weeks = timeEntries.Select(t => t.Week).Distinct().ToList();
-
-            // Only your Time Entries are shown
-            // UNLESS you're a supervisor or admin
-            // Parse the selected week using the same ISO format the select emits
+            // Apply week filter (ISO format yyyy-MM-dd expected from the select)
             if (!string.IsNullOrEmpty(SelectedWeek)
-                && DateOnly.TryParse(SelectedWeek, out var parsedWeek))
+                && DateOnly.TryParseExact(SelectedWeek, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedWeek))
             {
                 timeEntries = timeEntries.Where(t => t.Week == parsedWeek);
             }
 
-            if (!string.IsNullOrEmpty(SelectedUser))
+            // Apply user filter (admins/supervisors only)
+            if (!string.IsNullOrEmpty(SelectedUser) && isAuthorized)
             {
                 timeEntries = timeEntries.Where(t => t.UserID == SelectedUser);
             }
 
-            // Only your Time Entries are shown UNLESS you're a supervisor or admin
+            // Only show your entries for non-authorized users
             if (!isAuthorized)
             {
                 timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
             }
+
             timeEntries = timeEntries.OrderBy(t => t.TimeIn);
-            TimeEntry = timeEntries.ToList();
+            TimeEntry = await timeEntries.ToListAsync();
         }
 
-        //public void OnPostUsers()
-        //{
-        //    var timeEntries = from t in Context.TimeEntry
-        //                      select t;
-
-        //    var isAuthorized = User?.Identity != null && User.Identity.IsAuthenticated;
-
-        //    var currentUserId = UserManager.GetUserId(User);
-
-        //    Users = (from t in Context.TimeEntry
-        //             join u in Context.Users on t.UserID equals u.Id
-        //             orderby u.Id
-        //             select u.Id).Distinct().ToList();
-
-        //    if (!string.IsNullOrEmpty(SelectedUser))
-        //    {
-        //        timeEntries = timeEntries.Where(t => t.UserID == SelectedUser);
-        //    }
-
-        //    // Only your Time Entries are shown UNLESS you're a supervisor or admin
-        //    if (!isAuthorized)
-        //    {
-        //        timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
-        //    }
-        //    timeEntries = timeEntries.OrderBy(t => t.TimeIn);
-        //    TimeEntry = timeEntries.ToList();
-        //}
+        // handle the filter form
+        public IActionResult OnPostWeeks()
+        {
+            // Redirect to GET so query string preserves filters and Generate Report link will include them
+            return RedirectToPage("./Index", new { SelectedWeek, SelectedUser });
+        }
 
         public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
         {

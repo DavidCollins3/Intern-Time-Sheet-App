@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Playwright;
 using System;
+using System.Globalization; 
 using System.Linq;
 using System.Threading.Tasks;
 using TimeKeeperApp.Data;
@@ -23,18 +24,26 @@ namespace TimeKeeperApp.Pages.Reports
         }
 
         // GET /Reports/GeneratePdf?week=2025-11-17
-        public async Task<IActionResult> OnGetAsync(string week)
+        public async Task<IActionResult> OnGetAsync(string week, string? user)
         {
             DateOnly parsed;
-            DateOnly? parsedWeek = DateOnly.TryParse(week, out parsed) ? parsed : (DateOnly?)null;
+            DateOnly? parsedWeek = !string.IsNullOrEmpty(week) &&
+                DateOnly.TryParseExact(week, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out parsed)
+                ? parsed
+                : (DateOnly?)null;
 
-            // Query joined data and project to DTOs (server-side join)
-            var entries = await (from t in _db.TimeEntry
+            var query = _db.TimeEntry.AsQueryable();
+
+            if (parsedWeek.HasValue)
+                query = query.Where(t => t.Week == parsedWeek.Value);
+
+            if (!string.IsNullOrEmpty(user))
+                query = query.Where(t => t.UserID == user);
+
+            var entries = await (from t in query
                                  join u in _db.Users on t.UserID equals u.Id into uj
                                  from u in uj.DefaultIfEmpty()
-                                 where !parsedWeek.HasValue || t.Week == parsedWeek.Value 
-                                    & t.ApprovalStatus == true
-                                 orderby u.UserName, t.Week, t.TimeIn
+                                 orderby u.UserName, t.TimeIn
                                  select new
                                  {
                                      UserName = u != null ? u.UserName : t.UserID,
