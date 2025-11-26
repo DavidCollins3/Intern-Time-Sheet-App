@@ -16,27 +16,6 @@
 <body>
     <h2 class="center">Time Sheet Report</h2>
 
-    <section class="totals">
-        <h3>Totals</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Submitted By</th>
-                    <th>Total Hours</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var t in Model.Totals)
-                {
-                    <tr>
-                        <td>@t.UserName</td>
-                        <td>@t.TotalHoursFormatted</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </section>
-
     <h3>Entries</h3>
     <table>
         <thead>
@@ -61,5 +40,28 @@
         }
         </tbody>
     </table>
+
+    <section class="totals">
+        <h3>Totals</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Submitted By</th>
+                    <th>Total Hours</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.Totals)
+                {
+                    <tr>
+                        <td>@t.UserName</td>
+                        <td>@t.TotalHoursFormatted</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+
+
 </body>
 </html>

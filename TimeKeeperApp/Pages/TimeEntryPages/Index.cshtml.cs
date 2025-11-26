@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,15 +38,19 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         [BindProperty(SupportsGet = true)]
         public string? SelectedUser { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string? SelectedApprovalStatus { get; set; }
+
+        public List<SelectListItem> ApprovalStatusOptions { get; set; } = new List<SelectListItem>
+        {
+            //new SelectListItem { Value = "", Text = "All" },
+            new SelectListItem { Value = "true", Text = "Approved" },
+            new SelectListItem { Value = "false", Text = "Not Approved" }
+        };
+
         public async Task OnGetAsync()
         {
-            var timeEntries = from t in Context.TimeEntry
-                              select t;
-
-            var isAuthorized = User.IsInRole(Constants.AdminRole) ||
-                               User.IsInRole(Constants.SuperRole);
-
-            var currentUserId = UserManager.GetUserId(User);
+            var timeEntries = filterHelper();
 
             Weeks = timeEntries.Select(t => t.Week).Distinct().ToList();
 
@@ -56,26 +61,6 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
                        .Select(u => new SelectListItem { Value = u.Id, Text = u.UserName })
                        .ToListAsync();
 
-            // Apply week filter (ISO format yyyy-MM-dd expected from the select)
-            if (!string.IsNullOrEmpty(SelectedWeek)
-                && DateOnly.TryParseExact(SelectedWeek, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedWeek))
-            {
-                timeEntries = timeEntries.Where(t => t.Week == parsedWeek);
-            }
-
-            // Apply user filter (admins/supervisors only)
-            if (!string.IsNullOrEmpty(SelectedUser) && isAuthorized)
-            {
-                timeEntries = timeEntries.Where(t => t.UserID == SelectedUser);
-            }
-
-            // Only show your entries for non-authorized users
-            if (!isAuthorized)
-            {
-                timeEntries = timeEntries.Where(t => t.UserID == currentUserId);
-            }
-
-            timeEntries = timeEntries.OrderBy(t => t.TimeIn);
             TimeEntry = await timeEntries.ToListAsync();
         }
 
@@ -83,7 +68,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         public IActionResult OnPostWeeks()
         {
             // Redirect to GET so query string preserves filters and Generate Report link will include them
-            return RedirectToPage("./Index", new { SelectedWeek, SelectedUser });
+            return RedirectToPage("./Index", new { SelectedWeek, SelectedUser, SelectedApprovalStatus });
         }
 
         public async Task<IActionResult> OnPostAsync(int id, bool approvalStatus)
@@ -113,31 +98,28 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public async Task<IActionResult> OnPostApproveAll()
         {
-            var timeEntries = from t in Context.TimeEntry
-                              select t;
-
-            if (!string.IsNullOrEmpty(SelectedWeek)
-                && DateOnly.TryParse(SelectedWeek, out var parsedWeek))
-            {
-                timeEntries = timeEntries.Where(t => t.Week == parsedWeek);
-            }
+            var timeEntries = filterHelper();
 
             if (timeEntries == null)
             {
                 return NotFound();
             }
 
-            foreach (var timeEntry in timeEntries)
-            {
+            var entriesToApprove = await timeEntries.ToListAsync();
 
+            foreach (var timeEntry in entriesToApprove)
+            {
                 var isAuthorized = await AuthorizationService.AuthorizeAsync(
                                                      User, timeEntry,
                                                      TimeEntryOperations.Approve);
-                if (!isAuthorized.Succeeded)
+                if (isAuthorized.Succeeded)
+                {
+                    approveHelper(timeEntry);
+                }
+                else
                 {
                     return Forbid();
                 }
-                approveHelper(timeEntry);
             }
             await Context.SaveChangesAsync();
             return RedirectToPage("./Index");
@@ -147,6 +129,50 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         {
             timeEntry.ApprovalStatus = true;
             Context.TimeEntry.Update(timeEntry);
+        }
+
+        public IQueryable<TimeEntry> filterHelper()
+        {
+            var timeEntryList = from t in Context.TimeEntry select t;
+
+            var isAuthorized = User.IsInRole(Constants.AdminRole) ||
+                                User.IsInRole(Constants.SuperRole);
+
+            var currentUserId = UserManager.GetUserId(User);
+
+            // Filter for the selected week, if any
+            if (!string.IsNullOrEmpty(SelectedWeek)
+                && DateOnly.TryParse(SelectedWeek, out var parsedWeek))
+            {
+                timeEntryList = timeEntryList.Where(t => t.Week == parsedWeek);
+            }
+
+            // Apply user filter (admins/supervisors only)
+            if (!string.IsNullOrEmpty(SelectedUser) && isAuthorized)
+            {
+                timeEntryList = timeEntryList.Where(t => t.UserID == SelectedUser);
+            }
+
+            // Only show your entries for non-authorized users
+            if (!isAuthorized)
+            {
+                timeEntryList = timeEntryList.Where(t => t.UserID == currentUserId);
+            }
+
+            // Filter for the selected Approval Status, if there is one
+            if (!string.IsNullOrEmpty(SelectedApprovalStatus))
+            {
+                if (SelectedApprovalStatus == "true")
+                {
+                    timeEntryList = timeEntryList.Where(t => t.ApprovalStatus == true);
+                }
+                else if (SelectedApprovalStatus == "false")
+                {
+                    timeEntryList = timeEntryList.Where(t => t.ApprovalStatus == false);
+                }
+            }
+            timeEntryList = timeEntryList.OrderBy(t => t.TimeIn);
+            return timeEntryList;
         }
     }
 }

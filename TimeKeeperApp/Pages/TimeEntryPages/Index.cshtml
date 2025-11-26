@@ -29,29 +29,90 @@
 }
 
 <div class="dropdown">
-    <form style="display:inline;" method="post" asp-page-handler="Weeks">
+    <form style="display:inline;" method="get" asp-page-handler="Weeks">
         <select asp-for="SelectedWeek" asp-items="@weekSelectList">
             <option value="">Select a Week</option>
         </select>
 
+        @* Admins and supervisors can filter which user they are viewing; 
+           interns can only view their own entries regardless *@
+        @if (User.IsInRole(Constants.AdminRole) ||
+        User.IsInRole(Constants.SuperRole))
+        {
         <select asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
             <option value="">All Users</option>
         </select>
+        }
 
-        <button type="submit" class="btn btn-xs btn-success">Filter</button>
+        <select asp-for="SelectedApprovalStatus" asp-items="Model.ApprovalStatusOptions" class="ml-2">
+            <option value="">Approval Status</option>
+        </select>
 
+        <button type="submit" class="btn btn-xs btn-secondary">Filter</button>
+
+        <a asp-page="./Index" class="btn btn-xs btn-secondary ml-2" role="button">Reset</a>
+    </form>
+
+    @section Scripts {
+        <script>
+            function syncFilters() {
+                // Get dropdown values
+                var week = document.querySelector('[name="SelectedWeek"]').value;
+                var userElem = document.querySelector('[name="SelectedUser"]');
+                var user = userElem ? userElem.value : '';
+                var status = document.querySelector('[name="SelectedApprovalStatus"]').value;
+
+                // Update Approve All hidden fields (if present)
+                var weekHidden = document.getElementById('approveAllWeek');
+                if (weekHidden) weekHidden.value = week;
+                var userHidden = document.getElementById('approveAllUser');
+                if (userHidden) userHidden.value = user;
+                var statusHidden = document.getElementById('approveAllStatus');
+                if (statusHidden) statusHidden.value = status;
+
+                // Update Generate Report link
+                var reportBtn = document.getElementById('generateReportBtn');
+                if (reportBtn) {
+                    var url = '/Reports/GeneratePdf?';
+                    if (week) url += 'week=' + encodeURIComponent(week) + '&';
+                    if (user) url += 'user=' + encodeURIComponent(user) + '&';
+                    if (status) url += 'status=' + encodeURIComponent(status) + '&';
+                    url = url.replace(/&$/, '');
+                    reportBtn.setAttribute('href', url);
+                }
+            }
+
+            // Attach to dropdowns
+            document.querySelector('[name="SelectedWeek"]').addEventListener('change', syncFilters);
+            if (document.querySelector('[name="SelectedUser"]')) {
+                document.querySelector('[name="SelectedUser"]').addEventListener('change', syncFilters);
+            }
+            document.querySelector('[name="SelectedApprovalStatus"]').addEventListener('change', syncFilters);
+
+            // Initialize on page load
+            syncFilters();
+        </script>
+    }
+    
+    @* Hide the "Approve All" button from interns *@
         @if (User.IsInRole(Constants.AdminRole) ||
              User.IsInRole(Constants.SuperRole))
         {
-            <button type="submit" class="btn btn-xs btn-success" asp-page-handler="ApproveAll">Approve Week</button>
+            <form method="post" asp-page-handler="ApproveAll" style="display:inline;">
+                <input type="hidden" id="approveAllWeek" name="SelectedWeek" value="@Model.SelectedWeek" />
+                <input type="hidden" id="approveAllUser" name="SelectedUser" value="@Model.SelectedUser" />
+                <input type="hidden" id="approveAllStatus" name="SelectedApprovalStatus" value="@Model.SelectedApprovalStatus" />
+                <button type="submit" class="btn btn-xs btn-success">Approve All</button>
+            </form>
         }
-    </form>
 
-    @* Keep the report link outside the form; include both route values *@
-    <a asp-page="/Reports/GeneratePdf"
+    @* Keep the report link outside the form; include all route values *@
+    <a id="generateReportBtn"
+       asp-page="/Reports/GeneratePdf"
        asp-route-week="@Model.SelectedWeek"
        asp-route-user="@Model.SelectedUser"
-       class="btn btn-secondary" role="button">
+       asp-route-status="@Model.SelectedApprovalStatus"
+       class="btn btn-xs btn-primary" role="button">
         Generate Report
     </a>
 </div>
@@ -65,6 +126,8 @@
             <th>Time Out</th>
             <th>Hours Worked</th>
             <th>Approval Status</th>
+            <th>Actions</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -124,12 +187,12 @@
                         <button type="submit" class="btn btn-xs btn-success">Approve</button>
                         </form>
                 }
-                @if (item.ApprovalStatus == true)
+                @* @if (item.ApprovalStatus == true)
                 {
                     <form style="display:inline;" method="get">
                         <button class="btn btn-xs btn-success">Report</button>
                     </form>
-                }
+                } *@
             }
         </td>
     </tr>

@@ -28,7 +28,7 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
         public TimeEntry TimeEntry { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
-        {
+        {            
             TimeEntry? timeEntry = await Context.TimeEntry
                 .FirstOrDefaultAsync(m => m.TimeEntryId == id);
 
@@ -53,6 +53,11 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            if (TimeEntry.TimeOut.HasValue && TimeEntry.TimeOut <= TimeEntry.TimeIn)
+            {
+                ModelState.AddModelError("TimeEntry.TimeOut", "Time Out must be later than Time In.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

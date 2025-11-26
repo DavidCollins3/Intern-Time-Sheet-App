@@ -100,6 +100,10 @@ namespace TimeKeeperApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Role")]
+            public string Role { get; set; }
         }
 
 
@@ -124,6 +128,9 @@ namespace TimeKeeperApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    // Assign selected role to newly created user.
+                    await _userManager.AddToRoleAsync(user, Input.Role);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

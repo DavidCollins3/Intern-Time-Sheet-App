@@ -1,5 +1,7 @@
 ﻿@page
 @model RegisterModel
+@using TimeKeeperApp.Authorization
+
 @{
     ViewData["Title"] = "Register";
 }
@@ -26,6 +28,19 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="Input.Role">Select Role</label>
+                <select asp-for="Input.Role" class="form-control" aria-required="true" placeholder="Role">
+                    
+                    @* <option value="">Select Role</option> *@
+                    <option value="Intern">Intern</option>
+                    <option value="Supervisor">Supervisor</option>
+                    @if (User.IsInRole(Constants.AdminRole))
+                    {
+                        <option value="Admin">Admin</option>
+                    }
+                </select>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>

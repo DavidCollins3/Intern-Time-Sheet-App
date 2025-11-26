@@ -33,6 +33,11 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (TimeEntry.TimeOut.HasValue && TimeEntry.TimeOut <= TimeEntry.TimeIn)
+            {
+                ModelState.AddModelError("TimeEntry.TimeOut", "Time Out must be later than Time In.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
