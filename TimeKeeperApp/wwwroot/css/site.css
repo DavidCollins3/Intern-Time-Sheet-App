@@ -18,5 +18,6 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    background: linear-gradient(135deg, #6699ff 20%, #333399 80%);
+    margin-bottom: 60px;
 }

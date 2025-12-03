@@ -6,12 +6,11 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
+<div class="row justify-content-center">
+    <div class="col-md-4 bg-light rounded shadow mt-5 p-3">
+        <h1 class="text-center">@ViewData["Title"]</h1>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h2 class="text-center">Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -31,7 +30,7 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="Input.Role">Select Role</label>
-                <select asp-for="Input.Role" class="form-control" aria-required="true" placeholder="Role">
+                <select asp-for="Input.Role" class="form-select" aria-required="true" placeholder="Role">
                     
                     @* <option value="">Select Role</option> *@
                     <option value="Intern">Intern</option>
@@ -45,7 +44,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    @* <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>
             <hr />
@@ -74,7 +73,7 @@
                 }
             }
         </section>
-    </div>
+    </div> *@
 </div>
 
 @section Scripts {

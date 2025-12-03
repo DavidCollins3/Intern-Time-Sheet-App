@@ -5,10 +5,11 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Time Entries Index";
 }
 
-<h1>Index</h1>
+<div class="bg-light rounded shadow mt-5 p-3">
+<h1>@ViewData["Title"]</h1>
 
 @if (User.IsInRole(Constants.InternRole) ||
     User.IsInRole(Constants.AdminRole))
@@ -199,3 +200,4 @@
     }
 </tbody>
 </table>
+</div>

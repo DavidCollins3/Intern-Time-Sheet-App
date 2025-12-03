@@ -11,6 +11,10 @@ a {
   color: #0077cc;
 }
 
+body {
+    background: linear-gradient(135deg, #6699ff 0%, #333399 100%);
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
