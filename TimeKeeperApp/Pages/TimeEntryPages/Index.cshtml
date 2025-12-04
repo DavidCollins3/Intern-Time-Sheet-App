@@ -5,11 +5,11 @@
 @inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Time Entries Index";
+    ViewData["Title"] = "Time Entries";
 }
 
 <div class="bg-light rounded shadow mt-5 p-3">
-<h1>@ViewData["Title"]</h1>
+    <h1>@ViewData["Title"]</h1>
 
 @if (User.IsInRole(Constants.InternRole) ||
     User.IsInRole(Constants.AdminRole))
@@ -29,30 +29,39 @@
     var userSelectList = Model.Users; // already SelectListItem from the model
 }
 
-<div class="dropdown">
-    <form style="display:inline;" method="get" asp-page-handler="Weeks">
-        <select asp-for="SelectedWeek" asp-items="@weekSelectList">
-            <option value="">Select a Week</option>
-        </select>
+    <div class="dropdown">
+        <form class="row g-2 align-items-end" method="get" asp-page-handler="Weeks">
+            <div class="col-12 col-md-auto">
+                <label for="SelectedWeek" class="form-label">Select Week:</label>
+                <select id="SelectedWeek" asp-for="SelectedWeek" asp-items="@weekSelectList">
+                    <option value="">Select a Week</option>
+                </select>
+            </div>
 
         @* Admins and supervisors can filter which user they are viewing; 
            interns can only view their own entries regardless *@
         @if (User.IsInRole(Constants.AdminRole) ||
         User.IsInRole(Constants.SuperRole))
         {
-        <select asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
-            <option value="">All Users</option>
-        </select>
+        <div class="col-12 col-md-auto">
+            <label for="SelectedUser" class="form-label">Select User:</label>
+            <select id="SelectedUser" asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
+                <option value="">All Users</option>
+            </select>
+        </div>
         }
+        
+        <div class="col-12 col-md-auto">
+            <label for="SelectedApprovalStatus" class="form-label">Select Status:</label>
+            <select id="SelectedApprovalStatus" asp-for="SelectedApprovalStatus" asp-items="Model.ApprovalStatusOptions" class="ml-2">
+                <option value="">Approval Status</option>
+            </select>
+        </div>
 
-        <select asp-for="SelectedApprovalStatus" asp-items="Model.ApprovalStatusOptions" class="ml-2">
-            <option value="">Approval Status</option>
-        </select>
-
-        <button type="submit" class="btn btn-xs btn-secondary">Filter</button>
-
-        <a asp-page="./Index" class="btn btn-xs btn-secondary ml-2" role="button">Reset</a>
-    </form>
+        <div class="col-12 col-md-auto d-flex align-items-center gap-2 mt-2 mt-md-0">
+            <button type="submit" class="btn btn-xs btn-secondary">Filter</button>
+            <a asp-page="./Index" class="btn btn-xs btn-secondary ml-2" role="button">Reset</a>
+        </div>
 
     @section Scripts {
         <script>
@@ -99,105 +108,112 @@
         @if (User.IsInRole(Constants.AdminRole) ||
              User.IsInRole(Constants.SuperRole))
         {
+        <div class="col-12 col-md-auto d-flex align-items-center mt-2 mt-md-0">
             <form method="post" asp-page-handler="ApproveAll" style="display:inline;">
                 <input type="hidden" id="approveAllWeek" name="SelectedWeek" value="@Model.SelectedWeek" />
                 <input type="hidden" id="approveAllUser" name="SelectedUser" value="@Model.SelectedUser" />
                 <input type="hidden" id="approveAllStatus" name="SelectedApprovalStatus" value="@Model.SelectedApprovalStatus" />
-                <button type="submit" class="btn btn-xs btn-success">Approve All</button>
+                <button type="submit" class="btn btn-xs btn-success mt-2">Approve All</button>
             </form>
+        </div>
         }
+    </form>
 
-    @* Keep the report link outside the form; include all route values *@
-    <a id="generateReportBtn"
-       asp-page="/Reports/GeneratePdf"
-       asp-route-week="@Model.SelectedWeek"
-       asp-route-user="@Model.SelectedUser"
-       asp-route-status="@Model.SelectedApprovalStatus"
-       class="btn btn-xs btn-primary" role="button">
-        Generate Report
-    </a>
-</div>
+        @* Keep the report link outside the form; include all route values *@
+        <div class="col-12 col-md-auto d-flex align-items-center mt-2 mt-md-0">
+            <a id="generateReportBtn"
+                asp-page="/Reports/GeneratePdf"
+                asp-route-week="@Model.SelectedWeek"
+                asp-route-user="@Model.SelectedUser"
+                asp-route-status="@Model.SelectedApprovalStatus"
+                class="btn btn-xs btn-primary mt-2" role="button">
+                Generate Report
+            </a>
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>Week Starting</th>
-            <th>Time In</th>
-            <th>Time Out</th>
-            <th>Hours Worked</th>
-            <th>Approval Status</th>
-            <th>Actions</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-
-@foreach (var item in Model.TimeEntry)
-    {
-    <tr>
-        <td>
-            @{
-                // Fix: Use UserManager to get user name by ID
-                var user = await UserManager.FindByIdAsync(item.UserID);
-                var userName = user != null ? user.UserName : item.UserID;
-            }
-            @userName
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Week)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeIn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TimeOut)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.HoursWorked)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovalStatus)
-        </td>
-        <td>
-            @if ((await AuthorizationService.AuthorizeAsync(
-                User, item, TimeEntryOperations.Update)).Succeeded)
-                {
-                    <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
-                    <text> | </text>
-                }
-            
-            <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
-            
-            @if ((await AuthorizationService.AuthorizeAsync(
-                  User, item, TimeEntryOperations.Delete)).Succeeded)
-                {
-                    <text> | </text>
-                    <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
-                }
-        </td>
-        <td>
-        @if ((await AuthorizationService.AuthorizeAsync(
-            User, item, TimeEntryOperations.Approve)).Succeeded)
+<div class="table-responsive">
+    <table class="table" aria-label="Time Entries">
+        <thead>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Week Starting</th>
+                <th scope="col">Time In</th>
+                <th scope="col">Time Out</th>
+                <th scope="col">Hours Worked</th>
+                <th scope="col">Approval Status</th>
+                <th scope="colgroup" colspan="2">Actions</th>
+                @* <th></th> *@
+            </tr>
+        </thead>
+    
+        <tbody>
+            @foreach (var item in Model.TimeEntry)
             {
-                @if (item.ApprovalStatus != true)
+            <tr>
+                <td>
+                    @{
+                    // Fix: Use UserManager to get user name by ID
+                    var user = await UserManager.FindByIdAsync(item.UserID);
+                    var userName = user != null ? user.UserName : item.UserID;
+                    }
+                    @userName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Week)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoursWorked)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovalStatus)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, TimeEntryOperations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
+                        <text> | </text>
+                    }
+            
+                    <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
+            
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, TimeEntryOperations.Delete)).Succeeded)
+                    {
+                        <text> | </text>
+                        <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                    }
+                </td>
+                <td>
+                @if ((await AuthorizationService.AuthorizeAsync(
+                    User, item, TimeEntryOperations.Approve)).Succeeded)
                 {
+                    @if (item.ApprovalStatus != true)
+                    {
                         <form style="display:inline;" method="post">
-                        <input type="hidden" name="id" value="@item.TimeEntryId" />
-                        <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
-                        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                            <input type="hidden" name="id" value="@item.TimeEntryId" />
+                            <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
+                            <button type="submit" class="btn btn-xs btn-success">Approve</button>
                         </form>
+                    }
+                    @* @if (item.ApprovalStatus == true)
+                    {
+                        <form style="display:inline;" method="get">
+                            <button class="btn btn-xs btn-success">Report</button>
+                        </form>
+                    } *@
                 }
-                @* @if (item.ApprovalStatus == true)
-                {
-                    <form style="display:inline;" method="get">
-                        <button class="btn btn-xs btn-success">Report</button>
-                    </form>
-                } *@
-            }
-        </td>
-    </tr>
-    }
-</tbody>
-</table>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
 </div>
