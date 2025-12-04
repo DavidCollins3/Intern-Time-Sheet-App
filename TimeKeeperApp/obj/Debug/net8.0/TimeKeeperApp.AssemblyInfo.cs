@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TimeKeeperApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5fc08a5a79d56cb118820484f8ed5e4941ffd3d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c76cb9ae36c33b9a7831c8f1d99ce76c569f9d33")]
 [assembly: System.Reflection.AssemblyProductAttribute("TimeKeeperApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TimeKeeperApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

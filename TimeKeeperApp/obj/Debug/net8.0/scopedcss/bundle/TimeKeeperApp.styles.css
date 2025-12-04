@@ -12,6 +12,10 @@ a[b-koh6uhap7w] {
   color: #0077cc;
 }
 
+body[b-koh6uhap7w] {
+    background: linear-gradient(135deg, #6699ff 0%, #333399 100%);
+}
+
 .btn-primary[b-koh6uhap7w] {
   color: #fff;
   background-color: #1b6ec2;

@@ -33,7 +33,8 @@ namespace TimeKeeperApp.Authorization
             if (requirement.Name != Constants.CreateOperationName &&
                 requirement.Name != Constants.ReadOperationName &&
                 requirement.Name != Constants.UpdateOperationName &&
-                requirement.Name != Constants.DeleteOperationName)
+                requirement.Name != Constants.DeleteOperationName /* &&
+                requirement.Name != Constants.ApproveOperationName */)
             {
                 return Task.CompletedTask;
             }

@@ -33,6 +33,21 @@ namespace TimeKeeperApp.Pages.TimeEntryPages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (TimeEntry.TimeIn > DateTime.Now)
+            {
+                ModelState.AddModelError("TimeEntry.TimeIn", "You cannot submit a time entry for a future date/time.");
+            }
+
+            if (TimeEntry.TimeOut.HasValue && TimeEntry.TimeOut > DateTime.Now)
+            {
+                ModelState.AddModelError("TimeEntry.TimeOut", "You cannot submit a time entry for a future date/time.");
+            }
+
+            if (TimeEntry.TimeOut.HasValue && TimeEntry.TimeOut <= TimeEntry.TimeIn)
+            {
+                ModelState.AddModelError("TimeEntry.TimeOut", "Time Out must be later than Time In.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

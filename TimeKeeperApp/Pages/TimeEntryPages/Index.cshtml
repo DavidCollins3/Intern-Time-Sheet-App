@@ -1,78 +1,219 @@
 ﻿@page
 @model TimeKeeperApp.Pages.TimeEntryPages.IndexModel
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Rendering
+@inject UserManager<IdentityUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Time Entries";
 }
 
-<h1>Index</h1>
+<div class="bg-light rounded shadow mt-5 p-3">
+    <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].UserID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].Week)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeIn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].TimeOut)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].HoursWorked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TimeEntry[0].ApprovalStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.TimeEntry) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Week)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TimeOut)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HoursWorked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApprovalStatus)
-            </td>
-            <td>
-                @if ((await AuthorizationService.AuthorizeAsync(
-                    User, item, TimeEntryOperations.Update)).Succeeded)
-                    {
-                    <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
-                    <text> | </text>
+@if (User.IsInRole(Constants.InternRole) ||
+    User.IsInRole(Constants.AdminRole))
+{
+    <p>
+        <a asp-page="Create" class="btn btn-primary">Create New</a>
+    </p>
+}
+
+@{
+    var weekSelectList = Model.Weeks.Select(w => new SelectListItem
+    {
+        Value = w.ToString("yyyy-MM-dd"),
+        Text = w.ToString("yyyy-MM-dd")
+    }).ToList();
+
+    var userSelectList = Model.Users; // already SelectListItem from the model
+}
+
+    <div class="dropdown">
+        <form class="row g-2 align-items-end" method="get" asp-page-handler="Weeks">
+            <div class="col-12 col-md-auto">
+                <label for="SelectedWeek" class="form-label">Select Week:</label>
+                <select id="SelectedWeek" asp-for="SelectedWeek" asp-items="@weekSelectList">
+                    <option value="">Select a Week</option>
+                </select>
+            </div>
+
+        @* Admins and supervisors can filter which user they are viewing; 
+           interns can only view their own entries regardless *@
+        @if (User.IsInRole(Constants.AdminRole) ||
+        User.IsInRole(Constants.SuperRole))
+        {
+        <div class="col-12 col-md-auto">
+            <label for="SelectedUser" class="form-label">Select User:</label>
+            <select id="SelectedUser" asp-for="SelectedUser" asp-items="@userSelectList" class="ml-2">
+                <option value="">All Users</option>
+            </select>
+        </div>
+        }
+        
+        <div class="col-12 col-md-auto">
+            <label for="SelectedApprovalStatus" class="form-label">Select Status:</label>
+            <select id="SelectedApprovalStatus" asp-for="SelectedApprovalStatus" asp-items="Model.ApprovalStatusOptions" class="ml-2">
+                <option value="">Approval Status</option>
+            </select>
+        </div>
+
+        <div class="col-12 col-md-auto d-flex align-items-center gap-2 mt-2 mt-md-0">
+            <button type="submit" class="btn btn-xs btn-secondary">Filter</button>
+            <a asp-page="./Index" class="btn btn-xs btn-secondary ml-2" role="button">Reset</a>
+        </div>
+
+    @section Scripts {
+        <script>
+            function syncFilters() {
+                // Get dropdown values
+                var week = document.querySelector('[name="SelectedWeek"]').value;
+                var userElem = document.querySelector('[name="SelectedUser"]');
+                var user = userElem ? userElem.value : '';
+                var status = document.querySelector('[name="SelectedApprovalStatus"]').value;
+
+                // Update Approve All hidden fields (if present)
+                var weekHidden = document.getElementById('approveAllWeek');
+                if (weekHidden) weekHidden.value = week;
+                var userHidden = document.getElementById('approveAllUser');
+                if (userHidden) userHidden.value = user;
+                var statusHidden = document.getElementById('approveAllStatus');
+                if (statusHidden) statusHidden.value = status;
+
+                // Update Generate Report link
+                var reportBtn = document.getElementById('generateReportBtn');
+                if (reportBtn) {
+                    var url = '/Reports/GeneratePdf?';
+                    if (week) url += 'week=' + encodeURIComponent(week) + '&';
+                    if (user) url += 'user=' + encodeURIComponent(user) + '&';
+                    if (status) url += 'status=' + encodeURIComponent(status) + '&';
+                    url = url.replace(/&$/, '');
+                    reportBtn.setAttribute('href', url);
+                }
+            }
+
+            // Attach to dropdowns
+            document.querySelector('[name="SelectedWeek"]').addEventListener('change', syncFilters);
+            if (document.querySelector('[name="SelectedUser"]')) {
+                document.querySelector('[name="SelectedUser"]').addEventListener('change', syncFilters);
+            }
+            document.querySelector('[name="SelectedApprovalStatus"]').addEventListener('change', syncFilters);
+
+            // Initialize on page load
+            syncFilters();
+        </script>
+    }
+    
+    @* Hide the "Approve All" button from interns *@
+        @if (User.IsInRole(Constants.AdminRole) ||
+             User.IsInRole(Constants.SuperRole))
+        {
+        <div class="col-12 col-md-auto d-flex align-items-center mt-2 mt-md-0">
+            <form method="post" asp-page-handler="ApproveAll" style="display:inline;">
+                <input type="hidden" id="approveAllWeek" name="SelectedWeek" value="@Model.SelectedWeek" />
+                <input type="hidden" id="approveAllUser" name="SelectedUser" value="@Model.SelectedUser" />
+                <input type="hidden" id="approveAllStatus" name="SelectedApprovalStatus" value="@Model.SelectedApprovalStatus" />
+                <button type="submit" class="btn btn-xs btn-success mt-2">Approve All</button>
+            </form>
+        </div>
+        }
+    </form>
+
+        @* Keep the report link outside the form; include all route values *@
+        <div class="col-12 col-md-auto d-flex align-items-center mt-2 mt-md-0">
+            <a id="generateReportBtn"
+                asp-page="/Reports/GeneratePdf"
+                asp-route-week="@Model.SelectedWeek"
+                asp-route-user="@Model.SelectedUser"
+                asp-route-status="@Model.SelectedApprovalStatus"
+                class="btn btn-xs btn-primary mt-2" role="button">
+                Generate Report
+            </a>
+        </div>
+    </div>
+
+<div class="table-responsive">
+    <table class="table" aria-label="Time Entries">
+        <thead>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Week Starting</th>
+                <th scope="col">Time In</th>
+                <th scope="col">Time Out</th>
+                <th scope="col">Hours Worked</th>
+                <th scope="col">Approval Status</th>
+                <th scope="colgroup" colspan="2">Actions</th>
+                @* <th></th> *@
+            </tr>
+        </thead>
+    
+        <tbody>
+            @foreach (var item in Model.TimeEntry)
+            {
+            <tr>
+                <td>
+                    @{
+                    // Fix: Use UserManager to get user name by ID
+                    var user = await UserManager.FindByIdAsync(item.UserID);
+                    var userName = user != null ? user.UserName : item.UserID;
                     }
-                
-                <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
-                
-                @if ((await AuthorizationService.AuthorizeAsync(
-                      User, item, TimeEntryOperations.Delete)).Succeeded)
+                    @userName
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Week)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoursWorked)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovalStatus)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, TimeEntryOperations.Update)).Succeeded)
                     {
-                    <text> | </text>
-                    <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                        <a asp-page="./Edit" asp-route-id="@item.TimeEntryId">Edit</a> 
+                        <text> | </text>
                     }
-            </td>
-        </tr>
-      }
-    </tbody>
-</table>
+            
+                    <a asp-page="./Details" asp-route-id="@item.TimeEntryId">Details</a>
+            
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                        User, item, TimeEntryOperations.Delete)).Succeeded)
+                    {
+                        <text> | </text>
+                        <a asp-page="./Delete" asp-route-id="@item.TimeEntryId">Delete</a>
+                    }
+                </td>
+                <td>
+                @if ((await AuthorizationService.AuthorizeAsync(
+                    User, item, TimeEntryOperations.Approve)).Succeeded)
+                {
+                    @if (item.ApprovalStatus != true)
+                    {
+                        <form style="display:inline;" method="post">
+                            <input type="hidden" name="id" value="@item.TimeEntryId" />
+                            <input type="hidden" name="status" value="@TimeEntryOperations.Approve" />
+                            <button type="submit" class="btn btn-xs btn-success">Approve</button>
+                        </form>
+                    }
+                    @* @if (item.ApprovalStatus == true)
+                    {
+                        <form style="display:inline;" method="get">
+                            <button class="btn btn-xs btn-success">Report</button>
+                        </form>
+                    } *@
+                }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+</div>

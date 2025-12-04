@@ -236,7 +236,8 @@ namespace TimeKeeperApp.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("HoursWorked")
-                        .HasColumnType("nvarchar(max)");
+                        //.HasColumnType("nvarchar(max)");
+                        .HasComputedColumnSql("CONVERT([nvarchar](20),DATEADD([second],DATEDIFF([second],[TimeIn],[TimeOut]),0),(114))", stored: true);
 
                     b.Property<DateTime>("TimeIn")
                         .HasColumnType("datetime2");
